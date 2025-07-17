@@ -44,10 +44,10 @@
                             </table>
                         </td>
                         <td>
-                            @can('update role')
+                            
                                 <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            @endcan
-                            @can('delete role')
+                            
+                            
                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -56,11 +56,20 @@
                                         Delete
                                     </button>
                                 </form>
-                            @endcan
+                    
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        const AppData = {
+            RolesIndexRoute: "{{ route('roles.index') }}",
+            csrfToken: "{{ csrf_token() }}"
+        };
+    </script>
 @endsection
