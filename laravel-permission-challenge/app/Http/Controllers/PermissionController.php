@@ -25,7 +25,7 @@ class PermissionController extends Controller
         // }
 
         $search = $request->query('search');
-        $sortColumn = $request->query('sort', 'name'); // Default sort column
+        $sortColumn = $request->query('sort', 'name'); 
         $sortDirection = $request->query('direction', 'asc'); // Default sort direction
         $perPage = $request->query('per_page', 10); // Default items per page
 
