@@ -31,10 +31,10 @@ class UserController extends Controller
             ->paginate($perPage);
 
         if ($request->ajax()) {
-            return view('user_control.users.partials.user_table', compact('users'))->render();
+            return view('user.users.partials.user_table', compact('users'))->render();
         }
 
-        return view('user_control.users.index', compact('users', 'perPage'));
+        return view('user.users.index', compact('users', 'perPage'));
     }
 
     public function store(UserRequest $request)
@@ -56,7 +56,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::all();
         Log::info('Fetched roles:', ['roles' => $roles]);
-        return view('user_control.users.partials.user_form', compact('user', 'roles'))->render();
+        return view('user.users.partials.user_form', compact('user', 'roles'))->render();
     }
 
     public function update(UserRequest $request, User $user)
