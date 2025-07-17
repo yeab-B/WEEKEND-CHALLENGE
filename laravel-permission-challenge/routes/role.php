@@ -24,9 +24,11 @@ Route::prefix('roles')->group(function () {
 });
 // Permission Routes
 Route::resource('permissions', PermissionController::class)->except(['create', 'show']);
+Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
 Route::get('permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
 Route::put('permissions/{permission}', [PermissionController::class, 'update'])->name('permissions.update');
 Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
 
 // User Routes
 // Route::resource('users', UserController::class);
