@@ -7,7 +7,7 @@ import{
 
 
 if (document.getElementById('permission-search-form')) {
-    new PermissionListHandler({
+    new PermissionListHandlerListHandler({
         indexRoute: AppData.PermissionsIndexRoute,
         csrfToken: AppData.csrfToken,
     });

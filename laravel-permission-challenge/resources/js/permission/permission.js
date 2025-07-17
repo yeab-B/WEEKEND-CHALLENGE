@@ -1,4 +1,4 @@
-import ListHandler from "../../base/ListHandler";
+import ListHandler from "../base/ListHandler";
 
 
 
