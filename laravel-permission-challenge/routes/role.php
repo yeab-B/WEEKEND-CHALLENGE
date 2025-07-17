@@ -4,25 +4,24 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 
+
 // Role and Permission Routes
 Route::prefix('roles')->group(function () {
     Route::get('/', [RoleController::class, 'index'])->name('roles.index');
 
-    Route::middleware('permission:create role')->group(function () {
+   
         Route::get('/create', [RoleController::class, 'create'])->name('roles.create');
         Route::post('/', [RoleController::class, 'store'])->name('roles.store');
-    });
+ 
 
-    Route::middleware('permission:edit role')->group(function () {
+  
         Route::get('/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
         Route::put('/{role}', [RoleController::class, 'update'])->name('roles.update');
-    });
+ 
 
-    Route::middleware('permission:delete role')->group(function () {
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
-    });
+   
 });
-
 // Permission Routes
 Route::resource('permissions', PermissionController::class)->except(['create', 'show']);
 Route::get('permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
