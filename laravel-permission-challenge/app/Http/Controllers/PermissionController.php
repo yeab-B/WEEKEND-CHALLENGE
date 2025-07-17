@@ -10,48 +10,83 @@ use App\Http\Requests\PermissionRequest;
 
 class PermissionController extends Controller
 {
-    /**
-     * @var GenericPolicy
-     */
     protected $genericPolicy;
-    
-   public function __construct(GenericPolicy $genericPolicy)
+
+    public function __construct(GenericPolicy $genericPolicy)
     {
         $this->genericPolicy = $genericPolicy;
     }
 
-
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::all();
-        return view('permissions.index', compact('permissions'));
+        // Check if the user has permission to view permissions
+        // if (!Auth::user()->can('view permission')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+
+        $search = $request->query('search');
+        $sortColumn = $request->query('sort', 'name'); // Default sort column
+        $sortDirection = $request->query('direction', 'asc'); // Default sort direction
+        $perPage = $request->query('per_page', 10); // Default items per page
+
+        $permissions = Permission::query()
+            ->when($search, function ($query, $search) {
+                $searchTerm = '%' . strtolower($search) . '%';
+                return $query->whereRaw('LOWER(name) LIKE ?', [$searchTerm]);
+            })
+            ->orderBy($sortColumn, $sortDirection)
+            ->paginate($perPage);
+
+        if ($request->ajax()) {
+            return view('user.permissions.result', compact('permissions'))->render();
+        }
+
+        return view('user.permissions.index', compact('permissions', 'perPage'));
     }
 
-    public function create()
+
+
+    public function edit($id)
     {
-        return view('permissions.create');
+        // // Check if the user has permission to edit permissions
+        // if (!Auth::user()->can('edit permission')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+
+        $permission = Permission::findOrFail($id);
+        return view('user.permissions.partials.permission_form', compact('permission'))->render();
     }
 
     public function store(PermissionRequest $request)
     {
-        $permission = Permission::create($request->validated());
-        return redirect()->route('permissions.index')->with('success', 'Permission created successfully.');
-    }
+        Permission::create(['name' => $request->name]);
 
-    public function edit(Permission $permission)
-    {
-        return view('permissions.edit', compact('permission'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Permission created successfully.'
+        ]);
     }
 
     public function update(PermissionRequest $request, Permission $permission)
     {
-        $permission->update($request->validated());
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully.');
+        $permission->update(['name' => $request->name]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permission updated successfully.'
+        ]);
     }
 
-    public function destroy(Permission $permission)
+    public function destroy($id)
     {
+        // // Check if the user has permission to delete permissions
+        // if (!Auth::user()->can('delete permission')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+
+        $permission = Permission::findOrFail($id);
         $permission->delete();
-        return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully.');
+
+        return response()->json(['success' => true, 'message' => 'Permission deleted successfully.']);
     }
 }
