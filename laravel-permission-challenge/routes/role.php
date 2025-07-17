@@ -29,7 +29,7 @@ Route::put('permissions/{permission}', [PermissionController::class, 'update'])-
 Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
 // User Routes
-Route::resource('users', UserController::class);
-Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::post('users/{id}/archived', [UserController::class, 'archive'])->name('users.archive');
+// Route::resource('users', UserController::class);
+// Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+// Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+// Route::post('users/{id}/archived', [UserController::class, 'archive'])->name('users.archive');

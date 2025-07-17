@@ -31,7 +31,6 @@
                 @foreach ($permissions as $key => $permission)
                     <tr>
                         <td class="text-muted">{{ ($permissions->currentPage() - 1) * $permissions->perPage() + $key + 1 }}</td>
-
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
@@ -90,8 +89,6 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-3">
-            {{ $permissions->appends(request()->query())->links('vendor.pagination.default') }}
-        </div>
+        
     </div>
 </div>

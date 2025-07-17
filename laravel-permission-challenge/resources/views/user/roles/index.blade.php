@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
     <div class="container">
@@ -20,35 +20,22 @@
                         <td>{{ $role->name }}</td>
                         <td>
                             @php
-                                $groupedPermissions = [];
-
-                                // Group permissions by module (last word)
-                                foreach ($permissions as $permission) {
+                                $groupedPermissions = $permissions->groupBy(function ($permission) {
                                     $parts = explode(' ', $permission->name);
-
-                                    if (count($parts) > 1) {
-                                        $module = array_pop($parts); // Take the last word as the module
-                                        $action = implode(' ', $parts); // Remaining words as the action
-
-                                        $groupedPermissions[$module][] = [
-                                            'id' => $permission->id,
-                                            'action' => ucfirst($action),
-                                        ];
-                                    }
-                                }
+                                    return strtolower(array_pop($parts));
+                                });
                             @endphp
-
                             <table class="table table-borderless">
-                                @foreach ($groupedPermissions as $module => $actions)
+                                @foreach ($groupedPermissions as $module => $permissionsInModule)
                                     <tr>
                                         <td><strong>{{ ucfirst($module) }}</strong></td>
                                         <td>
-                                            @foreach ($actions as $item)
+                                            @foreach ($permissionsInModule as $permission)
                                                 <div class="form-check form-check-inline">
                                                     <input type="checkbox" class="form-check-input"
-                                                        {{ $role->permissions->contains($item['id']) ? 'checked' : '' }}
+                                                        {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
                                                         disabled>
-                                                    <label class="form-check-label">{{ $item['action'] }}</label>
+                                                    <label class="form-check-label">{{ ucfirst(explode(' ', $permission->name)[0]) }}</label>
                                                 </div>
                                             @endforeach
                                         </td>
@@ -56,10 +43,9 @@
                                 @endforeach
                             </table>
                         </td>
-
                         <td>
                             @can('update role')
-                            <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             @endcan
                             @can('delete role')
                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST" style="display:inline;">
