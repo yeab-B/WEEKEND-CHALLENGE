@@ -50,16 +50,23 @@
 </div>
 
 <!-- Create Permission Modal -->
-<div class="modal fade" id="createPermissionModal" tabindex="-1" aria-labelledby="createPermissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="permissionCreateModal" tabindex="-1" aria-labelledby="createPermissionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content"> <!-- removed bg-dark text-light border-secondary -->
-            @include('user.permissions.partials.permission_form', ['permission' => null])
+            @include('user.permissions.partials.form', ['permission' => null])
         </div>
     </div>
 </div>
 
 <!-- Edit Permission Modal -->
-<div class="modal fade" id="editPermissionModal" tabindex="-1" aria-labelledby="editPermissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="editPermissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"> <!-- removed bg-dark text-light border-secondary -->
+            <!-- Content loaded via AJAX -->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="permissionViewModal" tabindex="-1" aria-labelledby="viewPermissionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content"> <!-- removed bg-dark text-light border-secondary -->
             <!-- Content loaded via AJAX -->
@@ -67,3 +74,12 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+    <script>
+        const AppData = {
+            PermissionsIndexRoute: "{{ route('permissions.index') }}",
+            csrfToken: "{{ csrf_token() }}"
+        };
+    </script>
+@endsection
+
