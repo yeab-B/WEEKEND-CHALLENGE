@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
-use App\Policies\GenericPolicy;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\PermissionRequest;
+use App\Policies\GenericPolicy;
 
 class PermissionController extends Controller
-{
-    protected $genericPolicy;
+{   protected $genericPolicy;
 
     public function __construct(GenericPolicy $genericPolicy)
     {
@@ -19,20 +18,14 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
-        // Check if the user has permission to view permissions
-        // if (!Auth::user()->can('view permission')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
-
         $search = $request->query('search');
-        $sortColumn = $request->query('sort', 'name'); 
-        $sortDirection = $request->query('direction', 'asc'); // Default sort direction
-        $perPage = $request->query('per_page', 10); // Default items per page
+        $sortColumn = $request->query('sort', 'name');
+        $sortDirection = $request->query('direction', 'asc');
+        $perPage = $request->query('per_page', 10);
 
         $permissions = Permission::query()
             ->when($search, function ($query, $search) {
-                $searchTerm = '%' . strtolower($search) . '%';
-                return $query->whereRaw('LOWER(name) LIKE ?', [$searchTerm]);
+                return $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
             })
             ->orderBy($sortColumn, $sortDirection)
             ->paginate($perPage);
@@ -42,19 +35,6 @@ class PermissionController extends Controller
         }
 
         return view('user.permissions.index', compact('permissions', 'perPage'));
-    }
-
-
-
-    public function edit($id)
-    {
-        // // Check if the user has permission to edit permissions
-        // if (!Auth::user()->can('edit permission')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
-
-        $permission = Permission::findOrFail($id);
-        return view('user.permissions.partials.permission_form', compact('permission'))->render();
     }
 
     public function store(PermissionRequest $request)
@@ -67,6 +47,12 @@ class PermissionController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $permission = Permission::findOrFail($id);
+        return view('user.permissions.partials.permission_form', compact('permission'))->render();
+    }
+
     public function update(PermissionRequest $request, Permission $permission)
     {
         $permission->update(['name' => $request->name]);
@@ -77,14 +63,8 @@ class PermissionController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
-        // // Check if the user has permission to delete permissions
-        // if (!Auth::user()->can('delete permission')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
-
-        $permission = Permission::findOrFail($id);
         $permission->delete();
 
         return response()->json(['success' => true, 'message' => 'Permission deleted successfully.']);

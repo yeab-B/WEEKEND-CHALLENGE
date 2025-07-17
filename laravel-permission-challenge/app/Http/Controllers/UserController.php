@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+  public function index(Request $request)
     {
         $search = $request->query('search');
-        $sortColumn = $request->query('sort', 'first_name'); // Default sort column
-        $sortDirection = $request->query('direction', 'asc'); // Default sort direction
-        $perPage = $request->query('per_page', 10); // Default items per page
+        $sortColumn = $request->query('sort', 'name');
+        $sortDirection = $request->query('direction', 'asc');
+        $perPage = $request->query('per_page', 10);
 
         $users = User::query()
-            ->where('status', '!=', 'archived') // Exclude archived users
+            ->where('status', '!=', 'archived')
             ->when($search, function ($query, $search) {
                 $searchTerm = '%' . strtolower($search) . '%';
                 return $query->whereRaw('LOWER(name) LIKE ?', [$searchTerm])
@@ -37,9 +37,14 @@ class UserController extends Controller
         return view('user.users.index', compact('users', 'perPage'));
     }
 
+    public function create()
+    {
+        $roles = Role::all();
+        return view('user.users.create', compact('roles'));
+    }
+
     public function store(UserRequest $request)
     {
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -51,11 +56,9 @@ class UserController extends Controller
         return response()->json(['success' => true, 'message' => 'User created successfully.']);
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
         $roles = Role::all();
-        Log::info('Fetched roles:', ['roles' => $roles]);
         return view('user.users.partials.user_form', compact('user', 'roles'))->render();
     }
 
@@ -72,22 +75,15 @@ class UserController extends Controller
         return response()->json(['success' => true, 'message' => 'User updated successfully.']);
     }
 
-    public function archive($id)
+    public function archive(User $user)
     {
-        $user = User::findOrFail($id);
-        $user->update([
-            'status' => 'archived',
-            'updated_by' => Auth::id(),
-        ]);
-
-        return response()->json(['success' => 'true', 'message' => 'User archived successfully.']);
+        $user->update(['status' => 'archived']);
+        return response()->json(['success' => true, 'message' => 'User archived successfully.']);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
         $user->delete();
-
         return response()->json(['success' => true, 'message' => 'User deleted successfully.']);
     }
 }
