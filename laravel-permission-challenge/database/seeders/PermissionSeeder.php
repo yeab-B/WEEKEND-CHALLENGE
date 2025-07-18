@@ -24,6 +24,10 @@ class PermissionSeeder extends Seeder
             'delete article',
             'approve article',
             'view articles', 
+            'create articles',
+            'update articles',
+            'delete articles',
+            'approve articles',
 
             // User management
             'create user',
@@ -36,6 +40,10 @@ class PermissionSeeder extends Seeder
             'view role',
             'update role',
             'delete role',
+            'create roles',
+            'view roles',
+            'update roles',
+            'delete roles',
 
             // Permission management
             'create permission',
@@ -71,13 +79,13 @@ class PermissionSeeder extends Seeder
         ]);
 
         $editor->syncPermissions([
-            'view post',
-            'update post',
+            'view articles',
+            'update articles',
         ]);
 
         $blogger->syncPermissions([
-            'create post',
-            'view post',
+            'create articles',
+            'view articles',
         ]);
     }
 }
