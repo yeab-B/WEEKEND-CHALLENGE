@@ -1,36 +1,28 @@
-<form
-    id="{{ isset($permission) ? 'editForm' : 'createForm' }}"
-    method="POST"
-    action="{{ isset($permission) ? route('permissions.update', $permission->id) : route('permissions.store') }}"
->
+<div class="modal-header">
+    <h5 class="modal-title" id="{{ isset($permission) ? 'permissionEditModalLabel' : 'permissionCreateModalLabel' }}">
+        {{ isset($permission) ? 'Edit Permission' : 'Create New Permission' }}
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form id="{{ isset($permission) ? 'editForm' : 'createForm' }}"
+      method="POST"
+      action="{{ isset($permission) ? route('permissions.update', $permission->id) : route('permissions.store') }}">
     @csrf
     @if(isset($permission))
-        @method('PUT')
+        @method('PUT') {{-- Method spoofing for PUT requests --}}
     @endif
-
-    <div class="modal-body bg-dark text-light">
+    <div class="modal-body">
         <div class="mb-3">
-            <label for="name" class="form-label">Permission Name</label>
-            <input
-                type="text"
-                name="name"
-                class="form-control bg-dark text-light border-secondary"
-                value="{{ old('name', $permission->name ?? '') }}"
-                required
-                placeholder="e.g., edit user"
-            >
-            <div class="text-danger small" id="name-error"></div>
-            <small class="form-text text-muted">
-                Use at least two words. The last word will be used as the module name.<br>
-                Example: <strong>edit user</strong> → Action: edit, Module: user
-            </small>
+            <label for="name" class="form-label">Permission Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $permission->name ?? '') }}" required>
+            {{-- Placeholder for AJAX validation error for 'name' field --}}
+            <div class="text-danger mt-1 small" id="name-error"></div>
         </div>
     </div>
-
-    <div class="modal-footer bg-dark border-top">
+    <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">
-            {{ isset($permission) ? 'Update' : 'Save' }}
+        <button type="submit" class="btn btn-primary" data-loading-text="{{ isset($permission) ? 'Updating...' : 'Saving...' }}">
+            {{ isset($permission) ? 'Update Permission' : 'Save Permission' }}
         </button>
     </div>
 </form>
