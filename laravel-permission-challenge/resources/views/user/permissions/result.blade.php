@@ -3,7 +3,7 @@
         <table class="table table-hover table-nowrap align-middle mb-0">
             <thead class="table-light">
                 <tr>
-                    <th scope="col" class="text-nowrap" style="width: 50px;">ID</th>
+                   
                     <th scope="col" class="text-nowrap">Permission Name</th>
                     <th scope="col" class="text-nowrap" style="width: 150px;">Actions</th>
                 </tr>
@@ -11,21 +11,19 @@
             <tbody>
                 @forelse ($permissions as $permission)
                     <tr>
-                        <td class="text-muted">{{ $permission->id }}</td>
+                     
                         <td>{{ $permission->name }}</td>
                         <td>
                             <div class="hstack gap-2">
-                                {{-- Edit Button --}}
+                                
                                 <button type="button"
                                         class="btn btn-sm btn-soft-warning permission-edit-btn"
                                         data-id="{{ $permission->id }}"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Edit Permission">
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#permissionEditModal"
+                                        data-bs-placement="top" data-bs-title="Edit Permission">
                                     <i class="mdi mdi-pencil-outline"></i>
                                 </button>
-
-                                {{-- Delete Button --}}
                                 <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
