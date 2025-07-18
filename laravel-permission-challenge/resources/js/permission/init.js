@@ -1,5 +1,5 @@
 import{
-    PermissionListHandlerListHandler,
+    PermissionListHandler,
     RoleListHandler,
     UserListHandler
 
@@ -7,7 +7,7 @@ import{
 
 
 if (document.getElementById('permission-search-form')) {
-    new PermissionListHandlerListHandler({
+    new PermissionListHandler({
         indexRoute: AppData.PermissionsIndexRoute,
         csrfToken: AppData.csrfToken,
     });
