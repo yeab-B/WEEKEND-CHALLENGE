@@ -54,6 +54,8 @@
             <div class="modal-content">
                 {{-- Content for create form will be included directly, passing all permissions --}}
                 @include('user.roles.partials.form', ['role' => null, 'allPermissions' => $allPermissions ?? []])
+              
+
             </div>
         </div>
     </div>
