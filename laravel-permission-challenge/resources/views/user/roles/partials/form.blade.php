@@ -6,7 +6,8 @@
     <div class="container">
         <h2>{{ isset($role) ? 'Edit Role' : 'Create Role' }}</h2>
 
-        <form action="{{ isset($role) ? route('roles.update', $role->id) : route('roles.store') }}" method="POST">
+        <form action="{{ route('roles.update', $role) }}" method="POST">
+
             @csrf
             @if(isset($role))
                 @method('PUT')
