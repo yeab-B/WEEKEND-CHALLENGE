@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Policies\GenericPolicy;
+use Illuminate\Support\Facades\Log;
 
 class RoleController extends Controller
 {
@@ -44,12 +45,13 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
-        return view('user.roles.edit', compact('role', 'permissions'));
+        $allPermissions = Permission::all();
+        return view('user.roles.partials.form', compact('role', 'allPermissions'));
     }
 
     public function update(RoleRequest $request, Role $role)
     {
+        Log::info($request->all());
         $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions ?? []);
 
@@ -59,6 +61,7 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
+        $role = Role::findOrFail($role->id);
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }
