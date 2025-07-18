@@ -17,13 +17,17 @@ class RoleController extends Controller
         $this->genericPolicy = $genericPolicy;
     }
 
-    public function index()
-    {
-        $roles = Role::with('permissions')->get();
-        $permissions = Permission::all();
-        return view('user.roles.index', compact('roles', 'permissions'));
+   public function index()
+{
+    $roles = Role::with('permissions')->paginate(10); // eager load permissions
+    $allPermissions = Permission::all(); // fetch all permissions for checkboxes
+
+    if (request()->ajax()) {
+        return view('user.roles.result', compact('roles'))->render();
     }
 
+    return view('user.roles.index', compact('roles', 'allPermissions'));
+}
     public function create()
     {
         $permissions = Permission::all();
