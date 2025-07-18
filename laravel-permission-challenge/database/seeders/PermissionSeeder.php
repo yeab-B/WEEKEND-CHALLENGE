@@ -18,6 +18,12 @@ class PermissionSeeder extends Seeder
             'update post',
             'delete post',
             'approve post',
+             'view article',
+            'create article',
+            'update article',
+            'delete article',
+            'approve article',
+            'view articles', 
 
             // User management
             'create user',
@@ -36,6 +42,14 @@ class PermissionSeeder extends Seeder
             'view permission',
             'update permission',
             'delete permission',
+             'create permissions',
+            'view permissions',
+            'update permissions',
+            'delete permissions',
+            'create permissions',
+            'view permissions',
+            'update permissions',
+            'delete permissions',
         ];
 
         // Create or update permissions
