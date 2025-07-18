@@ -1,78 +1,49 @@
-@extends('layouts.app')
+<div class="modal-header">
+    <h5 class="modal-title" id="{{ isset($role) ? 'roleEditModalLabel' : 'roleCreateModalLabel' }}">
+        {{ isset($role) ? 'Edit Role' : 'Create New Role' }}
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form id="{{ isset($role) ? 'editForm' : 'createForm' }}"
+      method="POST"
+      action="{{ isset($role) ? route('roles.update', $role->id) : route('roles.store') }}">
+    @csrf
+    @if(isset($role))
+        @method('PUT') {{-- Method spoofing for PUT requests --}}
+    @endif
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="name" class="form-label">Role Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $role->name ?? '') }}" required>
+            {{-- Placeholder for AJAX validation error for 'name' field --}}
+            <div class="text-danger mt-1 small" id="name-error"></div>
+        </div>
 
-@section('title', isset($role) ? 'Edit Role' : 'Create Role')
-
-@section('content')
-    <div class="container">
-        <h2>{{ isset($role) ? 'Edit Role' : 'Create Role' }}</h2>
-
-        <form action="{{ route('roles.update', $role) }}" method="POST">
-
-            @csrf
-            @if(isset($role))
-                @method('PUT')
-            @endif
-
-            <div class="mb-3">
-                <label for="name" class="form-label"><strong>Role Name</strong></label>
-
-                @if(isset($role))
-                    <input type="text" class="form-control" value="{{ $role->name }}" disabled>
-                    <input type="hidden" name="name" value="{{ $role->name }}">
-                @else
-                    <input type="text" name="name" class="form-control" required>
-                    @error('name')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                @endif
+        <div class="mb-3">
+            <label class="form-label">Permissions</label>
+            <div class="row g-2">
+                @forelse ($allPermissions as $permission)
+                    <div class="col-md-4 col-sm-6"> {{-- 3 columns on desktop, 2 on tablet --}}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->name }}" id="permission-{{ $permission->id }}"
+                                {{ (isset($role) && $role->hasPermissionTo($permission->name)) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="permission-{{ $permission->id }}">
+                                {{ $permission->name }}
+                            </label>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12 text-muted">No permissions available.</div>
+                @endforelse
             </div>
-
-            @php
-                $permissionsGrouped = $permissions->groupBy(function ($permission) {
-                    $parts = explode(' ', $permission->name);
-                    return strtolower(array_pop($parts));
-                });
-            @endphp
-
-            <div class="mb-3">
-                <label><strong>Assign Permissions</strong></label>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Module</th>
-                            <th>Permissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($permissionsGrouped as $module => $permissionsInModule)
-                            <tr>
-                                <td><strong>{{ ucfirst($module) }}</strong></td>
-                                <td>
-                                    @foreach($permissionsInModule as $permission)
-                                        <div class="form-check d-inline-block me-3">
-                                            <input
-                                                class="form-check-input"
-                                                type="checkbox"
-                                                name="permissions[]"
-                                                value="{{ $permission->name }}"
-                                                {{ isset($role) && $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
-                                            >
-                                            <label class="form-check-label">
-                                                {{ ucfirst(explode(' ', $permission->name)[0]) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="mt-3">
-                <button type="submit" class="btn btn-success">{{ isset($role) ? 'Save' : 'Create Role' }}</button>
-                <a href="{{ route('roles.index') }}" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
+            {{-- Placeholder for AJAX validation error for 'permissions' field --}}
+            <div class="text-danger mt-1 small" id="permissions-error"></div>
+        </div>
     </div>
-@endsection
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" data-loading-text="{{ isset($role) ? 'Updating...' : 'Saving...' }}">
+            {{ isset($role) ? 'Update Role' : 'Save Role' }}
+        </button>
+    </div>
+</form>
