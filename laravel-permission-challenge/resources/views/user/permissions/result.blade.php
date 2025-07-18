@@ -1,84 +1,54 @@
-<div class="card-body">
+<div class="card-body pt-0">
     <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover table-nowrap align-middle mb-0">
             <thead class="table-light">
                 <tr>
-                    @php
-                        $columns = [
-                            'id' => 'No',
-                            'name' => 'Name',
-                            'created_at' => 'Added Date',
-                            'updated_at' => 'Last Update',
-                        ];
-                    @endphp
-                    @foreach ($columns as $column => $label)
-                        <th>
-                            <a href="{{ route('permissions.index', array_merge(request()->query(), ['sort' => $column, 'direction' => request('direction') == 'asc' && request('sort') == $column ? 'desc' : 'asc'])) }}"
-                               class="text-decoration-none text-dark">
-                                {{ $label }}
-                                @if (request('sort') == $column)
-                                    <i class="mdi mdi-sort-{{ request('direction') == 'asc' ? 'ascending' : 'descending' }}"></i>
-                                @else
-                                    <i class="mdi mdi-sort"></i>
-                                @endif
-                            </a>
-                        </th>
-                    @endforeach
-                    <th>Actions</th>
+                    <th scope="col" class="text-nowrap" style="width: 50px;">ID</th>
+                    <th scope="col" class="text-nowrap">Permission Name</th>
+                    <th scope="col" class="text-nowrap" style="width: 150px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($permissions as $key => $permission)
+                @forelse ($permissions as $permission)
                     <tr>
-                        <td class="text-muted">{{ ($permissions->currentPage() - 1) * $permissions->perPage() + $key + 1 }}</td>
+                        <td class="text-muted">{{ $permission->id }}</td>
+                        <td>{{ $permission->name }}</td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                <div class="me-2">
-                                    <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                        {{ strtoupper(substr($permission->name, 0, 1)) }}
-                                    </div>
-                                </div>
-                                <div>{{ $permission->name }}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <small class="text-muted">{{ $permission->created_at->format('Y-m-d H:i:s') }}</small><br>
-                            <small class="text-muted">{{ $permission->created_at->diffForHumans() }}</small>
-                        </td>
-                        <td>
-                            <small class="text-muted">{{ $permission->updated_at->format('Y-m-d H:i:s') }}</small><br>
-                            <small class="text-muted">{{ $permission->updated_at->diffForHumans() }}</small>
-                        </td>
-                        <td>
-                            <div class="d-flex gap-2">
+                            <div class="hstack gap-2">
+                                {{-- Edit Button --}}
                                 <button type="button"
-                                        class="btn btn-sm btn-outline-info permission-edit-btn"
+                                        class="btn btn-sm btn-soft-warning permission-edit-btn"
                                         data-id="{{ $permission->id }}"
                                         data-bs-toggle="tooltip"
-                                        title="Edit">
-                                    <i class="mdi mdi-pencil-outline"></i> Edit
+                                        data-bs-placement="top"
+                                        title="Edit Permission">
+                                    <i class="mdi mdi-pencil-outline"></i>
                                 </button>
 
-                                <form action="{{ route('permissions.destroy', $permission->id) }}"
-                                      method="POST" class="d-inline">
+                                {{-- Delete Button --}}
+                                <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button"
-                                            class="btn btn-sm btn-outline-danger permission-delete-btn"
+                                            class="btn btn-sm btn-soft-danger permission-delete-btn" {{-- Critical class for ListHandler --}}
                                             data-bs-toggle="tooltip"
-                                            title="Delete">
-                                        <i class="mdi mdi-delete-outline"></i> Delete
+                                            data-bs-placement="top"
+                                            title="Delete Permission">
+                                        <i class="mdi mdi-delete-outline"></i>
                                     </button>
                                 </form>
                             </div>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">No permissions found.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
-
     <div class="mt-3">
-        {{ $permissions->links('pagination::bootstrap-5') }}
+        {{ $permissions->appends(request()->query())->links('vendor.pagination.bootstrap-5') }} {{-- Adjust 'vendor.pagination.bootstrap-5' if your pagination view is different --}}
     </div>
 </div>
