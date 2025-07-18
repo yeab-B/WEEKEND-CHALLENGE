@@ -18,6 +18,9 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
+        if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+            abort(403, 'Unauthorized action.');
+        }
         $search = $request->query('search');
         $sortColumn = $request->query('sort', 'name');
         $sortDirection = $request->query('direction', 'asc');
@@ -39,6 +42,9 @@ class PermissionController extends Controller
 
     public function store(PermissionRequest $request)
     {
+        if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+            abort(403, 'Unauthorized action.');
+        }
         Permission::create(['name' => $request->name]);
 
         return response()->json([
@@ -48,13 +54,17 @@ class PermissionController extends Controller
     }
 
     public function edit($id)
-    {
+    {if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+            abort(403, 'Unauthorized action.');
+        }
         $permission = Permission::findOrFail($id);
         return view('user.permissions.partials.form', compact('permission'))->render();
     }
 
     public function update(PermissionRequest $request, Permission $permission)
-    {
+    {if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+            abort(403, 'Unauthorized action.');
+        }
         $permission->update(['name' => $request->name]);
 
         return response()->json([
@@ -64,7 +74,9 @@ class PermissionController extends Controller
     }
 
     public function destroy(Permission $permission)
-    {
+    {if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+            abort(403, 'Unauthorized action.');
+        }
         $permission->delete();
 
         return response()->json(['success' => true, 'message' => 'Permission deleted successfully.']);
