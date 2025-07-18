@@ -5,9 +5,13 @@
 @section('content')
     <div class="container">
         <h2>Edit Role</h2>
-        <form action="{{ route('roles.update', $role->id) }}" method="POST">
-            @csrf
-            @method('PUT')
+       <form action="{{ route('roles.update', $role->id) }}" method="POST">
+
+    @csrf
+    @method('PUT')
+    ...
+</form>
+
             <div class="mb-3">
                 <label class="form-label"><strong>Role Name</strong></label>
                 <input type="text" class="form-control" value="{{ $role->name }}" disabled>
