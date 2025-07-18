@@ -3,8 +3,8 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <div class="card"> <!-- removed bg-dark text-light -->
-            <div class="card-header border-bottom"> <!-- removed bg-dark text-white border-secondary -->
+        <div class="card">
+            <div class="card-header border-bottom">
                 <div class="row align-items-center">
                     <div class="col">
                         <h5 class="card-title mb-0">Permissions</h5>
@@ -49,37 +49,29 @@
     </div>
 </div>
 
-<!-- Create Permission Modal -->
-<div class="modal fade" id="permissionCreateModal" tabindex="-1" aria-labelledby="createPermissionModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="permissionCreateModal" tabindex="-1"  aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content"> <!-- removed bg-dark text-light border-secondary -->
+        <div class="modal-content">
             @include('user.permissions.partials.form', ['permission' => null])
         </div>
     </div>
 </div>
 
 <!-- Edit Permission Modal -->
-<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="editPermissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content"> <!-- removed bg-dark text-light border-secondary -->
-            <!-- Content loaded via AJAX -->
+        <div class="modal-content"> 
         </div>
     </div>
 </div>
-<div class="modal fade" id="permissionViewModal" tabindex="-1" aria-labelledby="viewPermissionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content"> <!-- removed bg-dark text-light border-secondary -->
-            <!-- Content loaded via AJAX -->
-        </div>
-    </div>
-</div>
+
 @endsection
 @section('scripts')
     <script>
         const AppData = {
-            PermissionsIndexRoute: "{{ route('permissions.index') }}",
+            permissionsIndexRoute: "{{ route('permissions.index') }}", 
             csrfToken: "{{ csrf_token() }}"
         };
     </script>
 @endsection
-
