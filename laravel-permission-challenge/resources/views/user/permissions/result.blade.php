@@ -1,6 +1,6 @@
 <div class="card-body">
     <div class="table-responsive">
-        <table class="table table-hover table-nowrap align-middle mb-0">
+        <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
                 <tr>
                     @php
@@ -12,9 +12,9 @@
                         ];
                     @endphp
                     @foreach ($columns as $column => $label)
-                        <th class="text-nowrap">
+                        <th>
                             <a href="{{ route('permissions.index', array_merge(request()->query(), ['sort' => $column, 'direction' => request('direction') == 'asc' && request('sort') == $column ? 'desc' : 'asc'])) }}"
-                               class="text-dark text-decoration-none">
+                               class="text-decoration-none text-dark">
                                 {{ $label }}
                                 @if (request('sort') == $column)
                                     <i class="mdi mdi-sort-{{ request('direction') == 'asc' ? 'ascending' : 'descending' }}"></i>
@@ -24,7 +24,7 @@
                             </a>
                         </th>
                     @endforeach
-                    <th class="text-nowrap text-dark">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,62 +33,52 @@
                         <td class="text-muted">{{ ($permissions->currentPage() - 1) * $permissions->perPage() + $key + 1 }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="avatar-xs">
-                                        <span class="avatar-title rounded-circle bg-primary-subtle text-primary">
-                                            {{ substr($permission->name, 0, 1) }}
-                                        </span>
+                                <div class="me-2">
+                                    <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                        {{ strtoupper(substr($permission->name, 0, 1)) }}
                                     </div>
                                 </div>
-                                <div class="flex-grow-1 ms-2">
-                                    <h6 class="mb-0">{{ $permission->name }}</h6>
-                                </div>
+                                <div>{{ $permission->name }}</div>
                             </div>
                         </td>
                         <td>
-                            <div class="d-flex flex-column">
-                                <span class="text-muted">{{ $permission->created_at->format('Y-m-d H:i:s') }}</span>
-                                <small class="text-muted">{{ $permission->created_at->diffForHumans() }}</small>
-                            </div>
+                            <small class="text-muted">{{ $permission->created_at->format('Y-m-d H:i:s') }}</small><br>
+                            <small class="text-muted">{{ $permission->created_at->diffForHumans() }}</small>
                         </td>
                         <td>
-                            <div class="d-flex flex-column">
-                                <span class="text-muted">{{ $permission->updated_at->format('Y-m-d H:i:s') }}</span>
-                                <small class="text-muted">{{ $permission->updated_at->diffForHumans() }}</small>
-                            </div>
+                            <small class="text-muted">{{ $permission->updated_at->format('Y-m-d H:i:s') }}</small><br>
+                            <small class="text-muted">{{ $permission->updated_at->diffForHumans() }}</small>
                         </td>
                         <td>
-                            <div class="hstack gap-2">
-                                @can('update permission')
-                                    <button data-id="{{ $permission->id }}"
-                                            class="btn btn-sm btn-soft-info permission-edit-btn"
+                            <div class="d-flex gap-2">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-info permission-edit-btn"
+                                        data-id="{{ $permission->id }}"
+                                        data-bs-toggle="tooltip"
+                                        title="Edit">
+                                    <i class="mdi mdi-pencil-outline"></i> Edit
+                                </button>
+
+                                <form action="{{ route('permissions.destroy', $permission->id) }}"
+                                      method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger permission-delete-btn"
                                             data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            data-bs-title="Edit">
-                                        <i class="mdi mdi-pencil-outline"></i>
+                                            title="Delete">
+                                        <i class="mdi mdi-delete-outline"></i> Delete
                                     </button>
-                                @endcan
-                                @can('delete permission')
-                                    <form action="{{ route('permissions.destroy', $permission->id) }}"
-                                          method="POST"
-                                          class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                                class="btn btn-sm btn-soft-danger permission-delete-btn"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="top"
-                                                data-bs-title="Delete">
-                                            <i class="mdi mdi-delete-outline"></i>
-                                        </button>
-                                    </form>
-                                @endcan
+                                </form>
                             </div>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        
+    </div>
+
+    <div class="mt-3">
+        {{ $permissions->links('pagination::bootstrap-5') }}
     </div>
 </div>
