@@ -50,7 +50,7 @@ class PermissionController extends Controller
     public function edit($id)
     {
         $permission = Permission::findOrFail($id);
-        return view('user.permissions.partials.permission_form', compact('permission'))->render();
+        return view('user.permissions.partials.form', compact('permission'))->render();
     }
 
     public function update(PermissionRequest $request, Permission $permission)
