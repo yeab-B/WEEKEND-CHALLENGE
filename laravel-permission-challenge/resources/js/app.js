@@ -1,5 +1,6 @@
 import './bootstrap';
 import './permission';
+import './article'
 import 'toastr/build/toastr.min.css';
 import toastr from 'toastr';
 // import Swal from 'sweetalert2';
