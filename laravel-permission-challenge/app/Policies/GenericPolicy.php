@@ -32,5 +32,9 @@ class GenericPolicy
     {
         return $user->hasPermissionTo('delete ' . Str::kebab(class_basename($model)));
     }
+    public function approve(User $user, $model)
+    {
+        return $user->hasPermissionTo('approve ' . Str::kebab(class_basename($model)));
+    }
 }
 
