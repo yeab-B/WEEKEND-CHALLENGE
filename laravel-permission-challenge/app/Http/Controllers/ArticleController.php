@@ -21,9 +21,9 @@ class ArticleController extends Controller
 
     public function index()
     { 
-        // if (!$this->genericPolicy->view(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!$this->genericPolicy->view(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $articles = Article::latest()->paginate(10);
         return view('user.articles.index', compact('articles'));
@@ -31,18 +31,18 @@ class ArticleController extends Controller
 
     public function create()
     {
-        // if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
 
         return view('user.articles.create');
     }
 
     public function store(Request $request)
     {
-        // if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -60,25 +60,25 @@ class ArticleController extends Controller
     public function show(Article $article)
     
     {
-        //   if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+          if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('user.articles.partials.show', compact('article'));
     }
 
     public function edit(Article $article)
     { 
-        //  if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+         if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('user.articles.partials.form', compact('article'));
     }
 
     public function update(Request $request, Article $article)
     { 
-        //  if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+         if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -91,18 +91,18 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     { 
-        //  if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+         if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
         $article->delete();
         return redirect()->route('articles.index')->with('success', 'Article deleted.');
     }
 
     public function approve(Article $article)
     { 
-        // if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+            abort(403, 'Unauthorized action.');
+        }
         $article->approved = true;
         $article->save();
 
