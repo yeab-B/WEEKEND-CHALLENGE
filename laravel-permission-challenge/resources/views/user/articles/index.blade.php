@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Ensure this matches your main layout file --}}
+@extends('layouts.app') 
 
 
 
@@ -9,11 +9,12 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-dark">Articles Management</h4>
-                        
+                        @can('create articles')
+                            {{-- Button to open the Create Article Modal --}}
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#articleCreateModal">
                                 <i class="mdi mdi-plus-circle-outline me-1"></i> Add New Article
                             </button>
-                        
+                        @endcan
                     </div>
                     <div class="card-body border-bottom">
                         <form method="GET" id="article-search-form" class="mb-3">
