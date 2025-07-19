@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Policies\GenericPolicy;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -31,12 +32,18 @@ class RoleController extends Controller
 }
     public function create()
     {
+        if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+            abort(403, 'Unauthorized action.');
+        }
         $permissions = Permission::all();
         return view('user.roles.create', compact('permissions'));
     }
 
     public function store(RoleRequest $request)
     {
+        if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+            abort(403, 'Unauthorized action.');
+        }
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->permissions ?? []);
 
@@ -45,12 +52,18 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
+          if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+            abort(403, 'Unauthorized action.');
+        }
         $allPermissions = Permission::all();
         return view('user.roles.partials.form', compact('role', 'allPermissions'));
     }
 
     public function update(RoleRequest $request, Role $role)
     {
+          if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+            abort(403, 'Unauthorized action.');
+        }
         Log::info($request->all());
         $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions ?? []);
@@ -60,6 +73,9 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
+          if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+            abort(403, 'Unauthorized action.');
+        }
         $role->delete();
         $role = Role::findOrFail($role->id);
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
