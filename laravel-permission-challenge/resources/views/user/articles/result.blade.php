@@ -28,7 +28,9 @@
                         </a>
                     </th>
                     <th scope="col" class="text-nowrap">Status</th>
+                    
                     <th scope="col" class="text-nowrap">Actions</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +55,8 @@
                         </td>
                         <td>
                             <div class="hstack gap-2">
-                                @can('view article') {{-- Assuming 'view article' permission --}}
+                                {{-- Changed 'view post' to 'view article' --}}
+                                @can('view article')
                                     <button data-id="{{ $article->id }}"
                                             class="btn btn-sm btn-soft-info article-view-btn"
                                             data-bs-toggle="tooltip"
@@ -62,7 +65,8 @@
                                         <i class="mdi mdi-eye-outline"></i>
                                     </button>
                                 @endcan
-                                @can('update article') {{-- Assuming 'update article' permission --}}
+                                {{-- Changed 'update post' to 'update article' --}}
+                                @can('update article')
                                     <button data-id="{{ $article->id }}"
                                             class="btn btn-sm btn-soft-warning article-edit-btn"
                                             data-bs-toggle="tooltip"
@@ -71,7 +75,8 @@
                                         <i class="mdi mdi-pencil-outline"></i>
                                     </button>
                                 @endcan
-                                @can('approve article') {{-- Assuming 'approve article' permission --}}
+                                {{-- Changed 'approve post' to 'approve article' --}}
+                                @can('approve article')
                                     @if (!$article->approved)
                                         <form action="{{ route('articles.approve', $article->id) }}" method="POST" class="d-inline">
                                             @csrf
@@ -86,12 +91,13 @@
                                         </form>
                                     @endif
                                 @endcan
-                                @can('delete article') {{-- Assuming 'delete article' permission --}}
+                                {{-- Changed 'delete post' to 'delete article' --}}
+                                @can('delete article')
                                     <form action="{{ route('articles.destroy', $article->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button"
-                                                class="btn btn-sm btn-soft-danger article-delete-btn" {{-- Use article-delete-btn for ListHandler --}}
+                                                class="btn btn-sm btn-soft-danger article-delete-btn"
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="top"
                                                 title="Delete">
@@ -111,6 +117,6 @@
         </table>
     </div>
     <div class="mt-3">
-        {{ $articles->appends(request()->query())->links('vendor.pagination.bootstrap-5') }} 
+        {{ $articles->appends(request()->query())->links('vendor.pagination.bootstrap-5') }}
     </div>
 </div>

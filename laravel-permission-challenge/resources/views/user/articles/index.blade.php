@@ -49,9 +49,8 @@
     <div class="modal fade" id="articleCreateModal" tabindex="-1" aria-labelledby="articleCreateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                {{-- Form will be loaded via AJAX from articles.create --}}
-                {{-- Or you can pre-include it if it's simple and doesn't need dynamic data for creation --}}
-                {{-- @include('articles.partials.form', ['article' => null, 'users' => $users ?? []]) --}}
+                @include('user.articles.partials.form', ['article' => null])
+               
             </div>
         </div>
     </div>

@@ -33,17 +33,17 @@
                                     <i class="mdi mdi-pencil-outline"></i>
                                 </button>
 
-                                {{-- Delete Button --}}
-                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                            class="btn btn-sm btn-soft-danger role-delete-btn" {{-- Critical class for ListHandler --}}
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="Delete Role">
-                                        <i class="mdi mdi-delete-outline"></i>
-                                    </button>
+                              <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
+    @csrf
+    @method('DELETE')
+    <button type="button"
+            class="btn btn-sm btn-soft-danger role-delete-btn" {{-- Critical class for ListHandler --}}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Delete Role">
+        <i class="mdi mdi-delete-outline"></i>
+    </button>
+</form>
                                 </form>
                             </div>
                         </td>
