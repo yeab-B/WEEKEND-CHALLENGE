@@ -50,7 +50,7 @@ class PermissionSeeder extends Seeder
             'view permission',
             'update permission',
             'delete permission',
-             'create permissions',
+            'create permissions',
             'view permissions',
             'update permissions',
             'delete permissions',
