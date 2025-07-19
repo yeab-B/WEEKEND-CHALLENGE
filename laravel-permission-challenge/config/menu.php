@@ -3,8 +3,8 @@
 return [
     [
         'name' => 'Dashboards',
-        'icon' => 'bx bx-grid-alt', 
-        'route' => 'dashboard',
+        'icon' => 'bx bx-grid-alt',
+        'route' => '',
         'permission' => null,
         'sub_menu' => [
             [
@@ -17,19 +17,19 @@ return [
     ],
     [
         'name' => 'Articles',
-        'icon' => 'bx bx-news', 
+        'icon' => 'bx bx-news',
         'route' => null,
-        'permission' => ['view article'],
+        'permission' => ['view articles'],
     ],
     [
         'name' => 'User Management',
-        'icon' => 'bx bx-user-circle', 
+        'icon' => 'bx bx-user-circle',
         'route' => 'dashboard',
         'permission' => null,
         'sub_menu' => [
             [
                 'name' => 'Permissions',
-                'icon' => 'bx bx-lock-open', 
+                'icon' => 'bx bx-lock-open',
                 'route' => 'user.table.index',
                 'permission' => null,
             ],
