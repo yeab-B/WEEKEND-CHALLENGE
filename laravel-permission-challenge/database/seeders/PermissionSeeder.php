@@ -13,11 +13,7 @@ class PermissionSeeder extends Seeder
         // Define all permissions
         $permissions = [
             // Post permissions
-            'create post',
-            'view post',
-            'update post',
-            'delete post',
-            'approve post',
+          
              'view article',
             'create article',
             'update article',
@@ -75,12 +71,16 @@ class PermissionSeeder extends Seeder
         $admin->syncPermissions(Permission::all());
 
         $viewer->syncPermissions([
-            'view post',
+            'view article',
+
         ]);
 
         $editor->syncPermissions([
             'view articles',
             'update articles',
+            'view article',
+            'update article',
+            
         ]);
 
         $blogger->syncPermissions([
