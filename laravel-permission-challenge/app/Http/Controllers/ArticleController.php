@@ -68,7 +68,7 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     { 
-         if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+         if (!$this->genericPolicy->update(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }
         return view('user.articles.partials.form', compact('article'));
@@ -76,7 +76,7 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $article)
     { 
-         if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+         if (!$this->genericPolicy->update(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -91,7 +91,7 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     { 
-         if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+         if (!$this->genericPolicy->delete(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }
         $article->delete();
@@ -100,7 +100,7 @@ class ArticleController extends Controller
 
     public function approve(Article $article)
     { 
-        if (!$this->genericPolicy->create(Auth::user(), new Article())) {
+        if (!$this->genericPolicy->approve(Auth::user(), new Article())) {
             abort(403, 'Unauthorized action.');
         }
         $article->approved = true;
