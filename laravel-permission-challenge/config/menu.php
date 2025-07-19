@@ -19,24 +19,24 @@ return [
         'name' => 'Articles',
         'icon' => 'bx bx-news',
         'route' => null,
-        'permission' => ['view articles'],
+        'permission' => ['view article'],
     ],
     [
         'name' => 'User Management',
         'icon' => 'bx bx-user-circle',
         'route' => 'dashboard',
-        'permission' => null,
+        'permission' => ['view permission', 'view role'],
         'sub_menu' => [
             [
                 'name' => 'Permissions',
                 'icon' => 'bx bx-lock-open',
-                'route' => 'user.table.index',
+                'route' => 'permission.index',
                 'permission' => null,
             ],
             [
                 'name' => 'Roles',
                 'icon' => 'bx bx-id-card',
-                'route' => 'user.table.index',
+                'route' => 'role.index',
                 'permission' => null,
             ]
         ],
