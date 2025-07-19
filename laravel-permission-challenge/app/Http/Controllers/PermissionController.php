@@ -18,7 +18,7 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
-        if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+        if (!$this->genericPolicy->view(Auth::user(), new Permission())) {
             abort(403, 'Unauthorized action.');
         }
         $search = $request->query('search');
@@ -54,7 +54,7 @@ class PermissionController extends Controller
     }
 
     public function edit($id)
-    {if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+    {if (!$this->genericPolicy->update(Auth::user(), new Permission())) {
             abort(403, 'Unauthorized action.');
         }
         $permission = Permission::findOrFail($id);
@@ -62,7 +62,7 @@ class PermissionController extends Controller
     }
 
     public function update(PermissionRequest $request, Permission $permission)
-    {if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+    {if (!$this->genericPolicy->update(Auth::user(), new Permission())) {
             abort(403, 'Unauthorized action.');
         }
         $permission->update(['name' => $request->name]);
@@ -74,7 +74,7 @@ class PermissionController extends Controller
     }
 
     public function destroy(Permission $permission)
-    {if (!$this->genericPolicy->create(Auth::user(), new Permission())) {
+    {if (!$this->genericPolicy->delete(Auth::user(), new Permission())) {
             abort(403, 'Unauthorized action.');
         }
         $permission->delete();

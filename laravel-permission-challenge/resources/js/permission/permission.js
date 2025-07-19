@@ -43,11 +43,7 @@ export class RoleListHandler extends ListHandler {
         });
     }
 
-    initEmployeeSelect2() {
-        // Use the generic function for this modal
-        const $select = $('.select2-ajax[name="user_id"]');
-        initEmployeeSelect2($select);
-    }
+   
 
     setupEventListeners() {
         super.setupEventListeners();
@@ -71,12 +67,7 @@ export class UserListHandler extends ListHandler {
         });
     }
 
-    initEmployeeSelect2() {
-        // Use the generic function for this modal
-        const $select = $('.select2-ajax[name="user_id"]');
-        initEmployeeSelect2($select);
-    }
-
+  
     setupEventListeners() {
         super.setupEventListeners();
         const namespace = `.${this.entityName}Handler`;

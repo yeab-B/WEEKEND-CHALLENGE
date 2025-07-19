@@ -21,8 +21,11 @@ class RoleController extends Controller
 
    public function index()
 {
-    $roles = Role::with('permissions')->paginate(10); // eager load permissions
-    $allPermissions = Permission::all(); // fetch all permissions for checkboxes
+     if (!$this->genericPolicy->view(Auth::user(), new Role())) {
+            abort(403, 'Unauthorized action.');
+        }
+    $roles = Role::with('permissions')->paginate(10); 
+    $allPermissions = Permission::all(); 
 
     if (request()->ajax()) {
         return view('user.roles.result', compact('roles'))->render();
@@ -52,7 +55,7 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-          if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+          if (!$this->genericPolicy->update(Auth::user(), new Role())) {
             abort(403, 'Unauthorized action.');
         }
         $allPermissions = Permission::all();
@@ -61,7 +64,7 @@ class RoleController extends Controller
 
     public function update(RoleRequest $request, Role $role)
     {
-          if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+          if (!$this->genericPolicy->update(Auth::user(), new Role())) {
             abort(403, 'Unauthorized action.');
         }
         Log::info($request->all());
@@ -73,7 +76,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-          if (!$this->genericPolicy->create(Auth::user(), new Role())) {
+          if (!$this->genericPolicy->delete(Auth::user(), new Role())) {
             abort(403, 'Unauthorized action.');
         }
         $role->delete();

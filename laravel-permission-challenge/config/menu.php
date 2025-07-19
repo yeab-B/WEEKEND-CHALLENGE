@@ -10,7 +10,7 @@ return [
             [
                 'name' => 'Table',
                 'icon' => 'bx bx-table',
-                'route' => 'user.table.index',
+                'route' => 'dashboard',
                 'permission' => null,
             ],
         ],
@@ -18,7 +18,7 @@ return [
     [
         'name' => 'Articles',
         'icon' => 'bx bx-news',
-        'route' => null,
+        'route' => 'articles.index',
         'permission' => ['view article'],
     ],
     [
@@ -30,13 +30,13 @@ return [
             [
                 'name' => 'Permissions',
                 'icon' => 'bx bx-lock-open',
-                'route' => 'permission.index',
+                'route' => 'permissions.index',
                 'permission' => null,
             ],
             [
                 'name' => 'Roles',
                 'icon' => 'bx bx-id-card',
-                'route' => 'role.index',
+                'route' => 'roles.index',
                 'permission' => null,
             ]
         ],
