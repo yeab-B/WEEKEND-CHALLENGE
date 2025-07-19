@@ -14,7 +14,7 @@ Route::post('/articles', [ArticleController::class, 'store'])
     ->name('articles.store');
 
 
-Route::get('/articles/{article}', [ArticleController::class, 'show'])
+Route::get('/articles/{article}/show', [ArticleController::class, 'show'])
     ->name('articles.show');
 
 Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])
