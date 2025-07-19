@@ -23,12 +23,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script src="{{ asset('path/to/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('path/to/metisMenu.min.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-
-    <script src="{{ asset('js/helpers.js') }}"></script> {{-- This should contain initEmployeeSelect2, etc. --}}
-    <script src="{{ asset('js/permission.js') }}"></script>
-    <script src="{{ asset('js/ListHandler.js') }}"></script>
-
     <script src="{{ asset('../../js/app.js') }}"></script>
 
    
@@ -55,8 +49,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="{{ asset('js/sidebar.js') }}"></script>
 
 </head>
 
