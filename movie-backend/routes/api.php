@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MoviesController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RateController;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -19,4 +20,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Ratings
     Route::post('/ratings', [RateController::class, 'store']);
     Route::get('/movies/{movieId}/ratings', [RateController::class, 'index']);
+});
+
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 });
