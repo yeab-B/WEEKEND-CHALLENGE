@@ -24,6 +24,7 @@ class RolePermissionSeeder extends Seeder
             'comment on movies',
         ];
 
+        // Create permissions if they don't exist
         foreach ($permissions as $perm) {
             Permission::firstOrCreate(['name' => $perm]);
         }
@@ -41,22 +42,25 @@ class RolePermissionSeeder extends Seeder
             'comment on movies',
         ]);
 
-        // Create or find an admin user
-        $admin = User::firstOrCreate(
+        // Create or update admin user
+        $admin = User::updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Super Admin',
-                'password' => bcrypt('password'),
+                'password' => bcrypt('password'), // Always hash passwords!
             ]
         );
 
-        // Assign admin role
-        $admin->assignRole('admin');
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
 
-        // Optionally assign all other users as customers
+        // Assign "customer" role to all users except admin
         $customerUsers = User::where('email', '!=', 'admin@example.com')->get();
         foreach ($customerUsers as $user) {
-            $user->assignRole('customer');
+            if (!$user->hasRole('customer')) {
+                $user->assignRole('customer');
+            }
         }
     }
 }
