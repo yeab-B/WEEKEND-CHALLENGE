@@ -9,9 +9,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Movies
     Route::get('/movies', [MoviesController::class, 'index']);
     Route::get('/movies/{id}', [MoviesController::class, 'show']);
-    Route::post('/movies', [MoviesController::class, 'store'])->middleware('role:admin');
-    Route::put('/movies/{id}', [MoviesController::class, 'update'])->middleware('role:admin');
-    Route::delete('/movies/{id}', [MoviesController::class, 'destroy'])->middleware('role:admin');
+    Route::post('/movies', [MoviesController::class, 'store']);
+    Route::put('/movies/{id}', [MoviesController::class, 'update']);
+    Route::delete('/movies/{id}', [MoviesController::class, 'destroy']);
 
     // Comments
     Route::post('/comments', [CommentController::class, 'store']);
