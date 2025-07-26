@@ -6,11 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Policies\MoviesPolicy;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class MoviesController extends Controller
 {
-    use AuthorizesRequests;
+    protected $MoviesPolicy;
+    public function __construct()
+    {
+    
+        // $this->MoviesPolicy = 'App\Policies\MoviesPolicy';
+        $this->MoviesPolicy = \App\Policies\MoviePolicy::class;
+
+    }
     public function index()
     {
         return Movie::with(['user'])->get();
@@ -23,6 +31,10 @@ class MoviesController extends Controller
 
     public function store(Request $request)
     {
+        $policy = new $this->MoviesPolicy;
+        if (!$policy->create(Auth::user())) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -37,7 +49,10 @@ class MoviesController extends Controller
     public function update(Request $request, $id)
     {
         $movie = Movie::findOrFail($id);
-        $this->authorize('update', $movie);
+        $policy = new $this->MoviesPolicy;
+        if (!$policy->update(Auth::user(), $movie)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
@@ -53,7 +68,10 @@ class MoviesController extends Controller
     public function destroy($id)
     {
         $movie = Movie::findOrFail($id);
-        $this->authorize('delete', $movie);
+        $policy = new $this->MoviesPolicy;
+        if (!$policy->delete(Auth::user(), $movie)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
         $movie->delete();
 
         return response()->json(['message' => 'Movie deleted']);
