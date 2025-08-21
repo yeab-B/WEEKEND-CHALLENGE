@@ -12,47 +12,44 @@ use App\Filament\Resources\Posts\Tables\PostsTable;
 use App\Models\Post;
 use BackedEnum;
 use Filament\Resources\Resource;
+use Filament\SpatieTranslatablePlugin\Translatable;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class PostResource extends Resource
-{
+class PostResource extends Resource {
     protected static ?string $model = Post::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'post';
 
-    public static function form(Schema $schema): Schema
-    {
-        return PostForm::configure($schema);
+    public static function form( Schema $schema ): Schema {
+        return PostForm::configure( $schema );
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return PostInfolist::configure($schema);
+  
+
+    public static function infolist( Schema $schema ): Schema {
+        return PostInfolist::configure( $schema );
     }
 
-    public static function table(Table $table): Table
-    {
-        return PostsTable::configure($table);
+    public static function table( Table $table ): Table {
+        return PostsTable::configure( $table );
     }
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array {
         return [
             //
         ];
     }
 
-    public static function getPages(): array
-    {
+    public static function getPages(): array {
         return [
-            'index' => ListPosts::route('/'),
-            'create' => CreatePost::route('/create'),
-            'view' => ViewPost::route('/{record}'),
-            'edit' => EditPost::route('/{record}/edit'),
+            'index' => ListPosts::route( '/' ),
+            'create' => CreatePost::route( '/create' ),
+            'view' => ViewPost::route( '/{record}' ),
+            'edit' => EditPost::route( '/{record}/edit' ),
         ];
     }
 }

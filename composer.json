@@ -1,0 +1,5 @@
+{
+    "require": {
+        "spatie/laravel-translatable": "^6.11"
+    }
+}
