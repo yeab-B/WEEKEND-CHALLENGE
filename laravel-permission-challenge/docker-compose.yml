@@ -1,0 +1,48 @@
+services:
+    database:
+        image: postgres:16.9
+        restart: always
+        environment:
+            POSTGRES_DB: week
+            POSTGRES_USER: yabe
+            POSTGRES_PASSWORD: yabe@girl@dev
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        networks:
+            - back-tier
+        ports:
+            - "5432:5432" # optional: allows host to connect
+
+    backend:
+        image: laravelphp/php-fpm
+        depends_on:
+            - database
+        environment:
+            DB_CONNECTION: pgsql
+            DB_HOST: database
+            DB_PORT: 5432
+            DB_DATABASE: week
+            DB_USERNAME: yabe
+            DB_PASSWORD: yabe@girl@dev
+        volumes:
+            - .:/var/www/html
+        networks:
+            - back-tier
+
+    pgadmin:
+        image: dpage/pgadmin4
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin0@yab.com
+            PGADMIN_DEFAULT_PASSWORD: yabe@girl@dev
+        ports:
+            - "8080:80"
+        networks:
+            - back-tier
+
+volumes:
+    db-data:
+        driver: local
+
+networks:
+    back-tier:
