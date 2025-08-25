@@ -5,9 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Article extends Model {
-    use HasFactory, SoftDeletes,InteractsWithMedia;
+class Article extends Model implements HasMedia {
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'user_id',
@@ -25,6 +27,13 @@ class Article extends Model {
 
     public function language() {
         return $this->belongsTo( Language::class, 'lang_id' );
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images')
+            ->singleFile()
+            ->useDisk('public');
     }
 }
 
