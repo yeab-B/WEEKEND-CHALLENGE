@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Policies\GenericPolicy;
 
 class ArticleController extends Controller
@@ -19,9 +20,7 @@ class ArticleController extends Controller
 
     public function index()
     {
-        if (!$this->genericPolicy->view(Auth::user(), new Article())) {
-            abort(403, 'Unauthorized action.');
-        }
+       
 
         $articles = Article::latest()->paginate(10);
         $languages = Language::all();
@@ -30,9 +29,7 @@ class ArticleController extends Controller
 
     public function create()
     {
-        if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-            abort(403, 'Unauthorized action.');
-        }
+      
 
         $languages = Language::all();
         return view('user.articles.create', compact('languages'));
@@ -40,9 +37,7 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        if (!$this->genericPolicy->create(Auth::user(), new Article())) {
-            abort(403, 'Unauthorized action.');
-        }
+        
 
         $request->validate([
             'lang_id' => 'required|exists:languages,id',
@@ -51,31 +46,33 @@ class ArticleController extends Controller
 
         ]);
 
-        Article::create([
+        $article = Article::create([
             'user_id' => Auth::id(),
             'lang_id' => $request->lang_id,
             'title'   => $request->title,
             'content' => $request->content,
 
         ]);
+        if ($request->hasFile('image')) {
+            $article->addMediaFromRequest('image')
+                ->toMediaCollection('image');
+            Log::info('Image uploaded successfully: ' . $request->file('image')->getClientOriginalName());
+        } else {
+            Log::info('No image uploaded for article: ' . $article->id);
+        }
 
         return redirect()->route('articles.index')->with('success', 'Article created successfully.');
     }
 
     public function show(Article $article)
     {
-        if (!$this->genericPolicy->view(Auth::user(), $article)) {
-            abort(403, 'Unauthorized action.');
-        }
-
+        
         return view('user.articles.partials.show', compact('article'));
     }
 
     public function edit(Article $article)
     {
-        if (!$this->genericPolicy->update(Auth::user(), $article)) {
-            abort(403, 'Unauthorized action.');
-        }
+       
 
         $languages = Language::all();
         return view('user.articles.partials.form', compact('article', 'languages'));
@@ -83,9 +80,7 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $article)
     {
-        if (!$this->genericPolicy->update(Auth::user(), $article)) {
-            abort(403, 'Unauthorized action.');
-        }
+       
 
         $request->validate([
             'lang_id' => 'required|exists:languages,id',
@@ -93,6 +88,10 @@ class ArticleController extends Controller
             'content' => 'required|string',
 
         ]);
+        if ($request->hasFile('image')) {
+            $article->clearMediaCollection('images'); // remove old image
+            $article->addMediaFromRequest('image')->toMediaCollection('images');
+        }
 
         $article->update($request->only('title', 'content', 'lang_id'));
 
@@ -101,23 +100,21 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
-        if (!$this->genericPolicy->delete(Auth::user(), $article)) {
-            abort(403, 'Unauthorized action.');
-        }
+      
 
         $article->delete();
         return redirect()->route('articles.index')->with('success', 'Article deleted.');
     }
 
-    public function approve(Article $article)
-    {
-        if (!$this->genericPolicy->approve(Auth::user(), $article)) {
-            abort(403, 'Unauthorized action.');
-        }
+    // public function approve(Article $article)
+    // {
+    //     if (!$this->genericPolicy->approve(Auth::user(), $article)) {
+    //         abort(403, 'Unauthorized action.');
+    //     }
 
-        $article->approved = true;
-        $article->save();
+    //     $article->approved = true;
+    //     $article->save();
 
-        return redirect()->route('articles.index')->with('success', 'Article approved.');
-    }
+    //     return redirect()->route('articles.index')->with('success', 'Article approved.');
+    // }
 }

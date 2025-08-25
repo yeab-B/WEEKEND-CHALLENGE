@@ -12,6 +12,8 @@ export class ArticleListHandler extends ListHandler {
             modalEditFormId: 'articleEditModal',
             modalViewFormId: 'articleViewModal',
         });
+        
+        this.hasFile = true;
     }
 
    

@@ -173,7 +173,7 @@ export default class ListHandler {
             successMessage,
             errorMessage,
             modalId,
-            hasFile = false
+            hasFile = true
         } = options;
 
         const submitButton = form.find('button[type="submit"]');

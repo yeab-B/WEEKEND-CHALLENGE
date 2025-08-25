@@ -28,6 +28,10 @@
                 @endif
             </p>
         </div>
+        @if($article->getFirstMediaUrl('images'))
+    <img src="{{ $article->getFirstMediaUrl('images') }}" alt="Article Image" width="200">
+@endif
+
     </div>
     <div class="row">
         <div class="col-md-6 mb-3">
