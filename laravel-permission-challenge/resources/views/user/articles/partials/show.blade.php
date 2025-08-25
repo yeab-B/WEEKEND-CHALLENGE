@@ -28,9 +28,25 @@
                 @endif
             </p>
         </div>
-        @if($article->getFirstMediaUrl('images'))
-    <img src="{{ $article->getFirstMediaUrl('images') }}" alt="Article Image" width="200">
-@endif
+        {{-- Article Image --}}
+        @php
+            $media = $article->getFirstMedia('images') ?: $article->getFirstMedia('image');
+            $mediaUrl = $media ? $media->getUrl() : null;
+        @endphp
+        
+        @if($mediaUrl)
+            <div class="mb-3">
+                <strong>Article Image:</strong>
+                <div class="mt-2">
+                    <img src="{{ $mediaUrl }}" alt="Article Image" class="img-fluid" style="max-width: 300px;">
+                </div>
+            </div>
+        @else
+            <div class="mb-3">
+                <strong>Article Image:</strong>
+                <p class="text-muted">No image uploaded for this article.</p>
+            </div>
+        @endif
 
     </div>
     <div class="row">
