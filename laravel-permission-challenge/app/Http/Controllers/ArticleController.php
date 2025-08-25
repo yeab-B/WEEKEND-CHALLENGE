@@ -43,7 +43,7 @@ class ArticleController extends Controller
             'lang_id' => 'required|exists:languages,id',
             'title'   => 'required|string|max:255',
             'content' => 'required|string',
-
+            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $article = Article::create([
@@ -55,7 +55,7 @@ class ArticleController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $article->addMediaFromRequest('image')
-                ->toMediaCollection('image');
+                ->toMediaCollection('images');
             Log::info('Image uploaded successfully: ' . $request->file('image')->getClientOriginalName());
         } else {
             Log::info('No image uploaded for article: ' . $article->id);
@@ -86,7 +86,7 @@ class ArticleController extends Controller
             'lang_id' => 'required|exists:languages,id',
             'title'   => 'required|string|max:255',
             'content' => 'required|string',
-
+            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         if ($request->hasFile('image')) {
             $article->clearMediaCollection('images'); // remove old image
