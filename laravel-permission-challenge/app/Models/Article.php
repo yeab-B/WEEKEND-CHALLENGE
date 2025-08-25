@@ -10,6 +10,7 @@ class Article extends Model {
 
     protected $fillable = [
         'user_id',
+        'lang_id',
         'title',
         'content',
         'approved',
