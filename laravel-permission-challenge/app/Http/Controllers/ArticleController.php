@@ -18,7 +18,7 @@ class ArticleController extends Controller
     }
 
     public function index()
-    { 
+    {
         if (!$this->genericPolicy->view(Auth::user(), new Article())) {
             abort(403, 'Unauthorized action.');
         }
@@ -44,20 +44,20 @@ class ArticleController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-       $request->validate([
-          'lang_id' => 'required|exists:languages,id',
-    'title'   => 'required|string|max:255',
-    'content' => 'required|string',
-  
-]);
+        $request->validate([
+            'lang_id' => 'required|exists:languages,id',
+            'title'   => 'required|string|max:255',
+            'content' => 'required|string',
 
-Article::create([
-    'user_id' => Auth::id(),
-     'lang_id' => $request->lang_id,
-    'title'   => $request->title,
-    'content' => $request->content,
-   
-]);
+        ]);
+
+        Article::create([
+            'user_id' => Auth::id(),
+            'lang_id' => $request->lang_id,
+            'title'   => $request->title,
+            'content' => $request->content,
+
+        ]);
 
         return redirect()->route('articles.index')->with('success', 'Article created successfully.');
     }
@@ -72,7 +72,7 @@ Article::create([
     }
 
     public function edit(Article $article)
-    { 
+    {
         if (!$this->genericPolicy->update(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }
@@ -82,16 +82,16 @@ Article::create([
     }
 
     public function update(Request $request, Article $article)
-    { 
+    {
         if (!$this->genericPolicy->update(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }
 
         $request->validate([
-             'lang_id' => 'required|exists:languages,id',
+            'lang_id' => 'required|exists:languages,id',
             'title'   => 'required|string|max:255',
             'content' => 'required|string',
-           
+
         ]);
 
         $article->update($request->only('title', 'content', 'lang_id'));
@@ -100,7 +100,7 @@ Article::create([
     }
 
     public function destroy(Article $article)
-    { 
+    {
         if (!$this->genericPolicy->delete(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }
@@ -110,7 +110,7 @@ Article::create([
     }
 
     public function approve(Article $article)
-    { 
+    {
         if (!$this->genericPolicy->approve(Auth::user(), $article)) {
             abort(403, 'Unauthorized action.');
         }

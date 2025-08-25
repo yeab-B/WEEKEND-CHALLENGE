@@ -35,23 +35,7 @@
             </select>
             <div class="text-danger mt-1" id="lang_id-error"></div>
         </div>
-
-        {{-- If you want to allow changing the author (user) during edit/create by admin,
-             you would add a select2 here, populated by the initEmployeeSelect2.
-             Make sure to pass $users if you need it.
-        --}}
-        {{--
-        <div class="mb-3">
-            <label for="user_id" class="form-label">Author</label>
-            <select class="form-control select2-ajax" name="user_id" id="user_id" style="width: 100%;">
-                @if (isset($article) && $article->user)
-                    <option value="{{ $article->user->id }}" selected>{{ $article->user->name }}</option>
-                @endif
-            </select>
-            <div class="text-danger mt-1" id="user_id-error"></div>
-        </div>
-        --}}
-
+        
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
