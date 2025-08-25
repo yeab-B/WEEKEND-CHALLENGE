@@ -5,9 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Article extends Model
-{
-    use HasFactory,SoftDeletes;
+class Article extends Model {
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -16,12 +15,14 @@ class Article extends Model
         'approved',
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [ 'deleted_at' ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    public function user() {
+        return $this->belongsTo( User::class );
+    }
+
+    public function language() {
+        return $this->belongsTo( Language::class, 'lang_id' );
     }
 }
-
 
