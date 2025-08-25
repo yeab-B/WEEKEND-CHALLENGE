@@ -50,8 +50,11 @@
         <div class="mb-3">
             <label for="image" class="form-label">Article Image</label>
             <input type="file" name="image" id="image" class="form-control">
-
-          
+            
+            {{-- Image Preview --}}
+            <div class="mt-2" id="imagePreviewContainer" style="display: none;">
+                <img id="imagePreview" src="" alt="Image Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+            </div>
         </div>
 
     </div>
@@ -69,13 +72,15 @@
 <script>
 document.getElementById('image').addEventListener('change', function(e) {
     const preview = document.getElementById('imagePreview');
+    const container = document.getElementById('imagePreviewContainer');
     const file = e.target.files[0];
+    
     if(file) {
         preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
+        container.style.display = 'block';
     } else {
         preview.src = '';
-        preview.style.display = 'none';
+        container.style.display = 'none';
     }
 });
 </script>
